@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.maka.mapper.Billmapper">
+    <!--插入记账-->
+    <insert id="insertAccount" parameterType="Useraccount">
+    insert into useraccount (userId, paymentId, money, billTypeId, incomeType, billTime, common) VALUES
+    (#{userId},#{paymentId},#{money},#{billTypeId},#{incomeType},#{billTime},#{common})
+    </insert>
+
+<!--        <resultMap id="UserAllaccount" type="User">-->
+<!--    &lt;!&ndash;        <result property="aid" column="aid" jdbcType="java.lang.Integer"/>&ndash;&gt;-->
+<!--    -->
+<!--            <result property="id" column="uaId" />-->
+<!--    -->
+<!--            <collection property="useraccount" ofType="Useraccount">-->
+<!--                <result property="money" column="money"/>-->
+<!--                <result property="billTime" column="billTime"/>-->
+<!--                <result property="common" column="common"/>-->
+<!--    -->
+<!--                <collection property="payment" ofType="Payment">-->
+<!--                    <result property="payment" column="paymentName"/>-->
+<!--                </collection>-->
+<!--    -->
+<!--                <collection property="billtype" ofType="Billtype">-->
+<!--                    <result property="billType" column="billType"/>-->
+<!--                </collection>-->
+<!--    -->
+<!--                <collection property="gainandpaytype" ofType="Gainandpaytype">-->
+<!--                    <result property="gainAndPayType" column="gainAndPayType"/>-->
+<!--                    <result property="src" column="src"/>-->
+<!--                </collection>-->
+<!--    -->
+<!--            </collection>-->
+<!--        </resultMap>-->
+
+    <!--查询账单-->
+    <select id="queryAllaccount"  resultType="java.util.Map">
+        select ua.userId uaId,
+        p.payment paymentName,
+        ua.money money,
+        b.billType billType,
+        g.gainAndPayType gainAndPayType, g.src src,
+        ua.billTime billTime,
+        ua.common common
+        from `user` u,
+        useraccount ua,
+        billtype b,
+        gainandpaytype g,
+        payment p
+        where u.id=ua.userId
+        and u.id=#{id}
+        and ua.paymentId=p.paymentId
+        and ua.billTypeId=b.billTypeId
+        and ua.incomeType=g.gainAndPayId
+    </select>
+</mapper>
